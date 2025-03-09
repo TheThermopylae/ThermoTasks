@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake;
+@font-face {
+  font-family: 'Rubik-Regular';
+  src: url('/public/fonts/Rubik-Regular.ttf');
+}
+
+* {
+  font-family: 'Rubik-Regular';
+  outline: none;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+.title {
+  @apply text-xl relative before:content-[''] before:absolute before:w-[5px] before:h-full before:bg-purple-700 before:top-0 before:right-0 pr-4 before:rounded-full;
 }

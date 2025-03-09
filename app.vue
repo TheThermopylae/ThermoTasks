@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <NuxtPage></NuxtPage>
-  </div>
+  <NuxtLayout>
+    <div>
+      <NuxtPage></NuxtPage>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup>
 useHead({
-  titleTemplate : 'ThermoApps %s'
+  titleTemplate: 'ThermoApps %s'
 })
 </script>

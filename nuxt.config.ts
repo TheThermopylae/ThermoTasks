@@ -9,4 +9,19 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
+    head: {
+      bodyAttrs: {
+        dir: 'rtl'
+      },
+      // link: [
+      //   { rel: 'icon', href: '/logo.png' }
+      // ]
+    },
+  },
+  modules: [
+    'motion-v/nuxt',
+  ],
 })
