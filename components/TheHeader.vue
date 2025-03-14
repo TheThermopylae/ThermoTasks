@@ -1,29 +1,33 @@
 <template>
   <Motion
-    class="fixed w-full right-0 p-4 border-b flex items-center gap-5 z-10"
     as="header"
-    :initial="{ top: '-200px' }"
-    :animate="{ top: 0 }"
-    :transition="{ duration: 0.5 }"
+    class="flex justify-between items-center container m-auto mb-10"
+    :initial="{ y: -200 }"
+    :animate="{ y: 0 }"
   >
-    <p class="text-3xl">Thermo<span class="text-purple-700">Apps</span></p>
-    <ul class="flex gap-5">
-      <li>
-        <a href="#about-me" class="hover:text-purple-700 transition-all"> درباره ی من</a>
-      </li>
-      <li>
-        <a href="#skills" class="hover:text-purple-700 transition-all">مهارت های من</a>
-      </li>
-      <li>
-        <a href="#apps" class="hover:text-purple-700 transition-all">برنامه های من</a>
-      </li>
-    </ul>
+    <h1 class="text-3xl">
+      Thermo<span class="text-yellow-500 font-bold">Tasks</span>
+    </h1>
+    <button class="btn-c" @click="showModal">
+      افزودن تسک
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-5 inline-block"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 4.5v15m7.5-7.5h-15"
+        />
+      </svg>
+    </button>
   </Motion>
 </template>
 
-<style scoped>
-header {
-  backdrop-filter: blur(5px) saturate(180%);
-  background-color: rgba(224, 224, 224, 0.32);
-}
-</style>
+<script setup>
+let showModal = inject('showModal')
+</script>

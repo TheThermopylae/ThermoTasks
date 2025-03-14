@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  ssr: false,
   css: ['~/assets/main.css'],
   postcss: {
     plugins: {
@@ -24,4 +25,7 @@ export default defineNuxtConfig({
   modules: [
     'motion-v/nuxt',
   ],
+  runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET
+  }
 })

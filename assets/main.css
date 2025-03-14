@@ -16,10 +16,26 @@ body {
   overflow-x: hidden;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
 .title {
-  @apply text-xl relative before:content-[''] before:absolute before:w-[5px] before:h-full before:bg-purple-700 before:top-0 before:right-0 pr-4 before:rounded-full;
+  @apply text-xl relative before:content-[''] before:absolute before:w-[5px] before:h-full before:bg-yellow-500 before:top-0 before:right-0 pr-4 before:rounded-full;
+}
+
+.btn-c {
+  @apply bg-yellow-500 rounded-lg px-4 py-3 text-white hover:opacity-90 flex justify-center items-center gap-2;
+}
+
+input {
+  @apply rounded-lg border p-2;
+}
+
+.set-ring {
+  @apply focus:ring-2 ring-yellow-500 transition;
+}
+
+.req {
+  @apply after:content-['*'] after:text-red-500 after:text-xl
 }

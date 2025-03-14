@@ -1,13 +1,53 @@
 <template>
   <NuxtLayout>
-    <div>
-      <NuxtPage></NuxtPage>
-    </div>
+    <NuxtPage></NuxtPage>
   </NuxtLayout>
 </template>
 
 <script setup>
 useHead({
-  titleTemplate: 'ThermoApps %s'
+  title: 'ThermoTasks'
 })
+
+let showAddTaskModal = ref(false)
+
+function showModal () {
+  showAddTaskModal.value = true
+}
+
+provide('showAddTaskModal', showAddTaskModal)
+provide('showModal', showModal)
 </script>
+
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+#blureffect {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0;
+  transition: 0.3s;
+}
+</style>
