@@ -66,7 +66,7 @@
 import { useToast } from 'vue-toastification'
 
 let props = defineProps(['data', 'index'])
-let emit = defineEmits(['refreshData'])
+let emit = defineEmits(['refreshData','editTask','deleteTask'])
 
 let taskStatus = ref(props.data.status)
 

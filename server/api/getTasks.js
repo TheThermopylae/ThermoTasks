@@ -1,7 +1,11 @@
 import tasks from '../../db/tasks.json'
 
 export default defineEventHandler(async event => {
-  // console.log(tasks)
+  let query = getQuery(event)
 
-  return tasks.data
+  console.log(query)
+
+  if (query.title)
+    return tasks.data.filter(task => task.title.includes(query.title))
+  else return tasks.data
 })

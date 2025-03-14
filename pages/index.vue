@@ -38,8 +38,14 @@
 </template>
 
 <script setup>
+let route = useRoute()
+
 let showAddTaskModal = inject('showAddTaskModal')
-let { data: tasks, refresh } = await useFetch('/api/getTasks')
+let { data: tasks, refresh } = await useAsyncData(() =>
+  $fetch('/api/getTasks', {
+    query: { title: route.query.title }
+  })
+)
 
 let showDeleteModal = ref(false)
 let showEditModal = ref(false)
@@ -54,4 +60,12 @@ async function showEditModalFunc (item) {
   targetTask.value = item
   showEditModal.value = true
 }
+
+watch(
+  () => route.query,
+  () => {
+    refresh()
+  },
+  { deep: true }
+)
 </script>

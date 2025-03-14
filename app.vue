@@ -2,6 +2,7 @@
   <NuxtLayout>
     <NuxtPage></NuxtPage>
   </NuxtLayout>
+  <NotAllowed></NotAllowed>
 </template>
 
 <script setup>
