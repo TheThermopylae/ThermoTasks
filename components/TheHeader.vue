@@ -33,7 +33,7 @@
       </svg>
     </div>
     <div>
-      <button
+      <!-- <button
         class="bg-yellow-400 p-3 rounded-tr-lg rounded-br-lg ml-0.5 w-[170px] text-white"
         @click="showModal"
       >
@@ -52,9 +52,9 @@
             d="M12 4.5v15m7.5-7.5h-15"
           />
         </svg>
-      </button>
+      </button> -->
       <button
-        class="bg-yellow-400 p-3 rounded-tl-lg rounded-bl-lg text-white w-[170px]"
+        class="bg-yellow-400 p-3 rounded-lg text-white "
         @click="showModal"
       >
         افزودن تسک

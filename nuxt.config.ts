@@ -25,7 +25,4 @@ export default defineNuxtConfig({
   modules: [
     'motion-v/nuxt',
   ],
-  runtimeConfig: {
-    jwtSecret: process.env.JWT_SECRET
-  }
 })

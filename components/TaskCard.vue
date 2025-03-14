@@ -1,6 +1,11 @@
 <template>
   <Motion
-    class="flex justify-between itemsend bg-white p-2 rounded-lg shadow"
+    class="flex justify-between itemsend bg-white p-2 rounded-lg shadow border"
+    :class="{
+      'border-red-500': props.data.priority === 'کم',
+      'border-yellow-500': props.data.priority === 'متوسط',
+      'border-green-500': props.data.priority === 'زیاد'
+    }"
     as="div"
     :initial="{ y: 10, opacity: 0 }"
     :animate="{ y: 0, opacity: 1 }"
@@ -12,7 +17,7 @@
       <h4 class="text-lg font-semibold">{{ props.data.title }}</h4>
       <p>توضیحات : {{ props.data.description }}</p>
       <select
-        id="task-status"
+        :id="'task-status-' + props.data.id"
         class="border mt-2 p-1 rounded-lg set-ring cursor-pointer"
         :class="{
           'text-yellow-500': taskStatus == 'در جریان',
@@ -66,7 +71,7 @@
 import { useToast } from 'vue-toastification'
 
 let props = defineProps(['data', 'index'])
-let emit = defineEmits(['refreshData','editTask','deleteTask'])
+let emit = defineEmits(['refreshData', 'editTask', 'deleteTask'])
 
 let taskStatus = ref(props.data.status)
 
