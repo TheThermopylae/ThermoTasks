@@ -31,7 +31,7 @@
             />
           </div>
           <div>
-            <label for="description">توضیحات</label>
+            <label for="description">توضیحات(اختیاری)</label>
             <input
               type="text"
               id="description"
@@ -39,6 +39,18 @@
               v-model="taskDescription"
             />
           </div>
+        </div>
+        <div class="mt-4">
+          <label for="priority">اولویت</label>
+          <select
+            v-model="task.priority"
+            id="priority"
+            class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
+          >
+            <option value="کم">کم</option>
+            <option value="متوسط">متوسط</option>
+            <option value="زیاد">زیاد</option>
+          </select>
         </div>
         <button class="btn-c w-full mt-4 h-12" v-if="!loading">
           ویرایش تسک
@@ -97,9 +109,6 @@ async function editTaskFunc () {
       description: taskDescription.value
     }
   })
-
-  console.log(data)
-
   loading.value = false
   toast.success('تسک شما با موفقیت ویرایش شد')
   emit('closeModal')

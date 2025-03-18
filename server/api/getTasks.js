@@ -5,7 +5,7 @@ export default defineEventHandler(async event => {
 
   console.log(query)
 
-  if (query.title)
-    return tasks.data.filter(task => task.title.includes(query.title))
+  if (query.name)
+    return tasks.data.filter(task => task.name.includes(query.name))
   else return tasks.data
 })

@@ -38,23 +38,49 @@
       ></label>
       <ul class="bg-base-200 text-base-content min-h-full w-96 p-4">
         <!-- Sidebar content here -->
+        <li class="mb-4 relative">
+          <input
+            type="text"
+            class="w-full"
+            placeholder="جست و جوی موسیقی"
+            v-model="searchValue"
+            @keyup.enter="refresh"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6 absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer"
+            @click="refresh"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </li>
         <li class="flex gap-3 mb-5">
           <MusicUploadMusic @uploadedMusic="refresh"></MusicUploadMusic>
         </li>
         <MusicCard
+          v-if="musics.length > 0"
           v-for="item in musics"
           :key="item.id"
           :music="item"
           @setSrcEmit="setSrc(item)"
           @deleteMusic="deleteMusicFunc(item)"
         ></MusicCard>
+        <li v-else class="text-center text-xl text-gray-800">موسیقی یافت نشد!</li>
         <li class="absolute bottom-2 w-full left-0">
           <AudioPlayer
             ref="audioPlayer"
             v-if="musicData.src"
             :option="{
               src: musicData.src,
-              title: musicData.title.slice(0,14) + '...',
+              title: musicData.title.slice(0, 14) + '...'
             }"
             @loadedmetadata="playMusicFunc"
           />
@@ -68,10 +94,16 @@
 import { useToast } from 'vue-toastification'
 import AudioPlayer from 'vue3-audio-player'
 import 'vue3-audio-player/dist/style.css'
+import { ref, watch } from 'vue'
 
+let searchValue = ref('')
 let toast = useToast()
 
-let { data: musics, refresh } = await useFetch('/api/music/getMusics')
+let { data: musics, refresh } = await useAsyncData(() =>
+  $fetch('/api/music/getMusics', {
+    query: { name: searchValue.value }
+  })
+)
 
 let musicData = reactive({
   src: '',
