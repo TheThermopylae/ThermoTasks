@@ -3,7 +3,11 @@
     class="text-left mb-2 text-wrap truncate w-full flex justify-between"
     style="direction: ltr"
   >
-    {{ props.music.name }}
+    {{
+      props.music.name.length > 30
+        ? props.music.name.slice(0, 30) + '...'
+        : props.music.name
+    }}
     <div class="flex flex-row-reverse items-end">
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -34,6 +34,7 @@
         @refreshData="refresh"
       ></ModalsEditTaskModal>
     </Transition>
+    <NuxtLink to="/login">sadf</NuxtLink>
   </div>
 </template>
 

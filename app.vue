@@ -6,6 +6,7 @@
 </template>
 
 <script setup>
+
 useHead({
   title: 'ThermoTasks'
 })

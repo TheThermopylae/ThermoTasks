@@ -73,14 +73,19 @@
           @setSrcEmit="setSrc(item)"
           @deleteMusic="deleteMusicFunc(item)"
         ></MusicCard>
-        <li v-else class="text-center text-xl text-gray-800">موسیقی یافت نشد!</li>
+        <li v-else class="text-center text-xl text-gray-800">
+          موسیقی یافت نشد!
+        </li>
         <li class="absolute bottom-2 w-full left-0">
           <AudioPlayer
             ref="audioPlayer"
             v-if="musicData.src"
             :option="{
               src: musicData.src,
-              title: musicData.title.slice(0, 14) + '...'
+              title:
+                musicData.title.length > 14
+                  ? '...' + musicData.title.slice(0, 14)
+                  : musicData.title
             }"
             @loadedmetadata="playMusicFunc"
           />
