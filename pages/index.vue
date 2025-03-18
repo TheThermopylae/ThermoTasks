@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid grid-cols-4 gap-5">
+    <div class="grid grid-cols-4 gap-5" v-if="tasks.length > 0">
       <TaskCard
         @refreshData="refresh"
         @deleteTask="showDeleteModalFunc(item)"
@@ -11,6 +11,7 @@
         :index="index"
       ></TaskCard>
     </div>
+    <p v-else class="text-center text-3xl text-gray-600">تسکی پیدا نشد</p>
     <Transition>
       <ModalsAddTaskModal
         @refreshData="refresh"

@@ -24,6 +24,7 @@
         stroke-width="1.5"
         stroke="currentColor"
         class="size-6 absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer"
+        @click="searchTask"
       >
         <path
           stroke-linecap="round"
@@ -86,9 +87,9 @@ let router = useRouter()
 
 async function searchTask () {
   if (searchValue.value) {
-    let data = await $fetch('/api/searchTodo', {
-      query: { title: searchValue.value }
-    })
+    // let data = await $fetch('/api/searchTodo', {
+    //   query: { title: searchValue.value }
+    // })
 
     router.push({
       path: '/',
