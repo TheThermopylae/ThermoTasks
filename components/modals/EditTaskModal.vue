@@ -43,7 +43,7 @@
         <div class="mt-4">
           <label for="priority">اولویت</label>
           <select
-            v-model="task.priority"
+            v-model="taskPriority"
             id="priority"
             class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
           >
@@ -85,6 +85,7 @@ let props = defineProps(['task'])
 
 let taskTitle = ref(props.task.title)
 let taskDescription = ref(props.task.description)
+let taskPriority = ref(props.task.priority)
 
 let loading = ref(false)
 
@@ -106,7 +107,8 @@ async function editTaskFunc () {
     body: {
       ...props.task,
       title: taskTitle.value,
-      description: taskDescription.value
+      description: taskDescription.value,
+      priority: taskPriority.value
     }
   })
   loading.value = false

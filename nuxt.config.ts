@@ -25,4 +25,7 @@ export default defineNuxtConfig({
   modules: [
     'motion-v/nuxt',
   ],
+  // build: {
+  //   transpile: ['vue-toastification']
+  // }
 })

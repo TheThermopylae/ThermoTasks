@@ -5,5 +5,5 @@ export default defineEventHandler(async event => {
 
   if (query.title)
     return tasks.data.filter(task => task.title.includes(query.title))
-  else return tasks.data
+  else return tasks.data.filter(task => task.for.includes(query.user))
 })

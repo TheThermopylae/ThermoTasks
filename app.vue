@@ -6,19 +6,25 @@
 </template>
 
 <script setup>
-
 useHead({
   title: 'ThermoTasks'
 })
 
 let showAddTaskModal = ref(false)
+let showAddCommonTaskModal = ref(false)
 
 function showModal () {
   showAddTaskModal.value = true
 }
 
+function showCommonModal () {
+  showAddCommonTaskModal.value = true
+}
+
 provide('showAddTaskModal', showAddTaskModal)
+provide('showAddCommonTaskModal', showAddCommonTaskModal)
 provide('showModal', showModal)
+provide('showCommonModal', showCommonModal)
 </script>
 
 <style>

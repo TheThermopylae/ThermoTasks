@@ -1,10 +1,15 @@
 <template>
   <div>
+    <StatusToast
+      :class="{ 'right-5': showToast, '-right-64': !showToast }"
+      :data="targetTask"
+    ></StatusToast>
     <div class="grid grid-cols-4 gap-5" v-if="tasks.length > 0">
       <TaskCard
         @refreshData="refresh"
         @deleteTask="showDeleteModalFunc(item)"
         @editTask="showEditModalFunc(item)"
+        @showToastEmit="showToastFunc(item)"
         v-for="(item, index) in tasks"
         :key="item.id"
         :data="item"
@@ -18,6 +23,13 @@
         v-if="showAddTaskModal"
         @closeModal="showAddTaskModal = false"
       ></ModalsAddTaskModal>
+    </Transition>
+    <Transition>
+      <ModalsAddCommonTaskModal
+        @refreshData="refresh"
+        v-if="showAddCommonTaskModal"
+        @closeModal="showAddCommonTaskModal = false"
+      ></ModalsAddCommonTaskModal>
     </Transition>
     <Transition>
       <ModalsDeleteTaskModal
@@ -35,17 +47,24 @@
         @refreshData="refresh"
       ></ModalsEditTaskModal>
     </Transition>
-    <NuxtLink to="/login">sadf</NuxtLink>
   </div>
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'check-auth'
+})
+
+let { user } = userAuth()
+
 let route = useRoute()
 
 let showAddTaskModal = inject('showAddTaskModal')
+let showAddCommonTaskModal = inject('showAddCommonTaskModal')
 let { data: tasks, refresh } = await useAsyncData(() =>
   $fetch('/api/getTasks', {
-    query: { title: route.query.title }
+    query: { title: route.query.title, user: user.value },
+    method: 'POST'
   })
 )
 
@@ -70,4 +89,13 @@ watch(
   },
   { deep: true }
 )
+
+let showToast = ref(false)
+
+function showToastFunc (item) {
+  showToast.value = true
+  setTimeout(() => (showToast.value = false), 5000)
+
+  targetTask.value = item
+}
 </script>

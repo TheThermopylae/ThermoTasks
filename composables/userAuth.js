@@ -1,5 +1,5 @@
 export default function () {
-  let kir = localStorage
+  let user = useState('user', () => localStorage.getItem('user'))
 
-  return { kir }
+  return { user }
 }

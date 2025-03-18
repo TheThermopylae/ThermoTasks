@@ -55,7 +55,27 @@
         </svg>
       </button> -->
       <button
-        class="bg-yellow-400 p-3 rounded-lg text-white "
+        class="bg-yellow-400 p-3 rounded-lg text-white ml-5"
+        @click="showCommonModal"
+      >
+        افزودن تسک مشترک
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-5 inline-block"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+      </button>
+      <button
+        class="bg-yellow-400 p-3 rounded-lg text-white"
         @click="showModal"
       >
         افزودن تسک
@@ -80,6 +100,7 @@
 
 <script setup>
 let showModal = inject('showModal')
+let showCommonModal = inject('showCommonModal')
 
 let searchValue = ref('')
 
@@ -87,10 +108,6 @@ let router = useRouter()
 
 async function searchTask () {
   if (searchValue.value) {
-    // let data = await $fetch('/api/searchTodo', {
-    //   query: { title: searchValue.value }
-    // })
-
     router.push({
       path: '/',
       query: { title: searchValue.value }

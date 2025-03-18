@@ -17,40 +17,19 @@
             clip-rule="evenodd"
           />
         </svg>
-        <h2>افزودن تسک</h2>
+        <h2>افزودن تسک مشترک</h2>
       </div>
       <form @submit.prevent="addTaskFunc">
-        <div class="grid grid-cols-2 gap-3 mt-2">
+        <div class="mt-2">
           <div>
-            <label for="title" class="req">عنوان</label>
+            <label for="task-id" class="req">آیدی تسک</label>
             <input
               type="text"
-              id="title"
+              id="task-id"
               class="w-full set-ring mt-2"
-              v-model="task.title"
+              v-model="taskId"
             />
           </div>
-          <div>
-            <label for="description">توضیحات(اختیاری)</label>
-            <input
-              type="text"
-              id="description"
-              class="w-full set-ring mt-2"
-              v-model="task.description"
-            />
-          </div>
-        </div>
-        <div class="mt-4">
-          <label for="priority">اولویت</label>
-          <select
-            v-model="task.priority"
-            id="priority"
-            class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
-          >
-            <option value="کم">کم</option>
-            <option value="متوسط">متوسط</option>
-            <option value="زیاد">زیاد</option>
-          </select>
         </div>
         <button class="btn-c w-full mt-4 h-12" v-if="!loading">
           افزودن تسک
@@ -80,18 +59,9 @@
 
 <script setup>
 import { useToast } from 'vue-toastification'
-
 let { user } = userAuth()
 
-let { today } = useDate()
-let task = reactive({
-  title: '',
-  description: '',
-  priority: 'متوسط',
-  date: today,
-  for: [user.value],
-  done: []
-})
+let taskId = ref('')
 
 let loading = ref(false)
 
@@ -100,21 +70,41 @@ let toast = useToast()
 let emit = defineEmits(['closeModal', 'refreshData'])
 
 async function addTaskFunc () {
-  if (!task.title) {
-    toast.error('لطفا یک عنوان برای تسکتون انتخاب کنید')
+  if (!taskId.value) {
+    toast.error('لطفا آیدی تسکتون رو وارد کنید')
     return
   }
-
   loading.value = true
 
-  let data = await $fetch('/api/addTask', {
-    method: 'POST',
-    body: task
-  })
+  try {
+    let findTasks = await $fetch('/api/getCommonTask', {
+      query: { id: taskId.value }
+    })
 
-  loading.value = false
-  toast.success('تسک شما با موفقیت اضافه شد')
-  emit('closeModal')
-  emit('refreshData')
+    console.log(findTasks)
+
+    if (!findTasks) {
+      toast.error('تسکی با این آیدی وجود ندارد!')
+      return
+    } else if (findTasks && findTasks.for.includes(user.value)) {
+      toast.warning('شما این تسک را از قبل دارید!')
+      return
+    } else {
+      findTasks.for.push(user.value)
+
+      let data = await $fetch('/api/addCommonTask', {
+        method: 'POST',
+        body: findTasks
+      })
+    }
+
+    emit('refreshData')
+    toast.success('تسک مشترک شما با موفقیت اضافه شد')
+    emit('closeModal')
+  } catch (err) {
+    console.log(err)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
