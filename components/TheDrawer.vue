@@ -165,7 +165,7 @@ let musicData = reactive({
   title: ''
 })
 
-let musicModes = ref(null)
+let musicModes = ref(JSON.parse(localStorage.getItem('musicModes')) || null)
 
 let audioPlayer = ref(null)
 
@@ -206,5 +206,6 @@ async function deleteMusicFunc (music) {
 
 watch(musicModes, () => {
   audioPlayer.value.pause()
+  localStorage.setItem('musicModes', JSON.stringify(musicModes.value))
 })
 </script>
