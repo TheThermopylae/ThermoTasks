@@ -54,7 +54,7 @@
           />
         </svg>
       </button> -->
-      <button
+      <!-- <button
         class="bg-yellow-400 p-3 rounded-lg text-white ml-5"
         @click="showCommonModal"
       >
@@ -73,7 +73,7 @@
             d="M12 4.5v15m7.5-7.5h-15"
           />
         </svg>
-      </button>
+      </button> -->
       <button
         class="bg-yellow-400 p-3 rounded-lg text-white"
         @click="showModal"

@@ -1,5 +1,5 @@
 <template>
-  <li
+  <div
     class="text-left mb-2 text-wrap truncate w-full flex justify-between"
     style="direction: ltr"
   >
@@ -40,7 +40,7 @@
         />
       </svg>
     </div>
-  </li>
+  </div>
 </template>
 
 <script setup>

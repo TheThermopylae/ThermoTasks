@@ -5,5 +5,6 @@
       <slot />
     </div>
     <TheDrawer></TheDrawer>
+    <VideosLink></VideosLink>
   </div>
 </template>

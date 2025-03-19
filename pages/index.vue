@@ -1,15 +1,20 @@
 <template>
   <div>
     <StatusToast
-      :class="{ 'right-5': showToast, '-right-64': !showToast }"
+      :class="{ 'right-5': showStatusToast, '-right-64': !showStatusToast }"
       :data="targetTask"
     ></StatusToast>
+    <IdToast
+      :class="{ 'right-5': showIdToast, '-right-96': !showIdToast }"
+      :data="targetTask"
+    ></IdToast>
     <div class="grid grid-cols-4 gap-5" v-if="tasks.length > 0">
       <TaskCard
         @refreshData="refresh"
         @deleteTask="showDeleteModalFunc(item)"
         @editTask="showEditModalFunc(item)"
-        @showToastEmit="showToastFunc(item)"
+        @showStatusToastEmit="showStatusToastFunc(item)"
+        @showIdToastEmit="showIdToastFunc(item)"
         v-for="(item, index) in tasks"
         :key="item.id"
         :data="item"
@@ -90,12 +95,28 @@ watch(
   { deep: true }
 )
 
-let showToast = ref(false)
+let showStatusToast = ref(false)
+let showIdToast = ref(false)
 
-function showToastFunc (item) {
-  showToast.value = true
-  setTimeout(() => (showToast.value = false), 5000)
+function showStatusToastFunc (item) {
+  showStatusToast.value = true
+  setTimeout(() => (showStatusToast.value = false), 5000)
 
   targetTask.value = item
+}
+
+function showIdToastFunc (item) {
+  if (showIdToast.value) {
+    showIdToast.value = false
+
+    setTimeout(() => {
+      showIdToast.value = true
+      targetTask.value = item
+    }, 500)
+  } else {
+    showIdToast.value = true
+    setTimeout(() => (showIdToast.value = false), 5000)
+    targetTask.value = item
+  }
 }
 </script>

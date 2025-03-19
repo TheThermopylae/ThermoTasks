@@ -1,6 +1,7 @@
 <template>
   <Motion
     class="flex justify-between itemsend bg-white p-2 rounded-lg shadow border relative"
+    @click.prevent.right="$emit('showIdToastEmit')"
     :class="{
       'border-red-500': props.data.priority === 'کم',
       'border-yellow-500': props.data.priority === 'متوسط',
@@ -47,7 +48,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="size-6 cursor-pointer hover:text-blue-500 transition"
-          @click="$emit('showToastEmit')"
+          @click="$emit('showStatusToastEmit')"
         >
           <path
             stroke-linecap="round"
@@ -128,7 +129,8 @@ let emit = defineEmits([
   'refreshData',
   'editTask',
   'deleteTask',
-  'showToastEmit'
+  'showStatusToastEmit',
+  'showIdToastEmit'
 ])
 
 let taskStatus = ref(

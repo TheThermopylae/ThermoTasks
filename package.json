@@ -11,6 +11,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@meersagor/wavesurfer-vue": "^1.0.0",
     "motion-v": "^0.11.3",
     "nuxt": "^3.16.0",
     "vue": "^3.5.13",
