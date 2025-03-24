@@ -1,6 +1,6 @@
 <template>
   <Motion
-    class="drawer z-20"
+    class="drawer"
     as="div"
     :initial="{ opacity: 0 }"
     :animate="{ opacity: 1 }"
@@ -30,11 +30,11 @@
         </svg>
       </label>
     </div>
-    <div class="drawer-side">
+    <div class="drawer-side z-50">
       <label
         for="my-drawer"
         aria-label="close sidebar"
-        class="drawer-overlay"
+        class="drawer-overlay z-0"
       ></label>
       <ul class="bg-base-200 text-base-content min-h-full w-96 p-4">
         <!-- Sidebar content here -->

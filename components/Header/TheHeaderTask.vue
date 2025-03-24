@@ -34,27 +34,7 @@
       </svg>
     </div>
     <div>
-      <!-- <button
-        class="bg-yellow-400 p-3 rounded-tr-lg rounded-br-lg ml-0.5 w-[170px] text-white"
-        @click="showModal"
-      >
-        افزودن دسته بندی
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-5 inline-block"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
-        </svg>
-      </button> -->
-      <!-- <button
+      <button
         class="bg-yellow-400 p-3 rounded-lg text-white ml-5"
         @click="showCommonModal"
       >
@@ -73,9 +53,29 @@
             d="M12 4.5v15m7.5-7.5h-15"
           />
         </svg>
-      </button> -->
+      </button>
       <button
-        class="bg-yellow-400 p-3 rounded-lg text-white"
+        class="bg-yellow-400 p-3 rounded-tr-lg rounded-br-lg ml-0.5 w-[170px] text-white"
+        @click="showCategoryModal"
+      >
+        افزودن دسته بندی
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-5 inline-block"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+      </button>
+      <button
+        class="bg-yellow-400 p-3 rounded-tl-lg rounded-bl-lg text-white"
         @click="showModal"
       >
         افزودن تسک
@@ -101,6 +101,7 @@
 <script setup>
 let showModal = inject('showModal')
 let showCommonModal = inject('showCommonModal')
+let showCategoryModal = inject('showCategoryModal')
 
 let searchValue = ref('')
 

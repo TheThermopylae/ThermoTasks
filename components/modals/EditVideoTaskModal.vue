@@ -17,7 +17,7 @@
             clip-rule="evenodd"
           />
         </svg>
-        <h2>ویرایش تسک</h2>
+        <h2>ویرایش تسک ویدیویی</h2>
       </div>
       <form @submit.prevent="editTaskFunc">
         <div class="grid grid-cols-2 gap-3 mt-2">
@@ -27,7 +27,7 @@
               type="text"
               id="title"
               class="w-full set-ring mt-2"
-              v-model="taskTitle"
+              v-model="videoTaskTitle"
             />
           </div>
           <div>
@@ -36,15 +36,13 @@
               type="text"
               id="description"
               class="w-full set-ring mt-2"
-              v-model="taskDescription"
+              v-model="videoTaskDescription"
             />
           </div>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="mt-4">
+          <div>
             <label for="priority">اولویت</label>
             <select
-              v-model="taskPriority"
+              v-model="videoTaskPriority"
               id="priority"
               class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
             >
@@ -53,25 +51,19 @@
               <option value="زیاد">زیاد</option>
             </select>
           </div>
-          <div class="mt-4">
-            <label for="category">دسته بندی</label>
-            <select
-              v-model="taskCategory"
-              id="category"
-              class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
-            >
-              <option
-                v-for="item in categories"
-                :value="item.title"
-                :key="item.id"
-              >
-                {{ item.title }}
-              </option>
-            </select>
+          <div>
+            <label for="video-edit-input">ویدیو</label>
+            <input
+              type="file"
+              class="file-input file-input-ghost w-full border border-yellow-500 outline-none mt-2 h-10 p-0"
+              @change="handleFileUpload"
+              accept="video/*"
+              id="video-edit-input"
+            />
           </div>
         </div>
         <button class="btn-c w-full mt-4 h-12" v-if="!loading">
-          ویرایش تسک
+          ویرایش تسک ویدیویی
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -99,44 +91,51 @@
 <script setup>
 import { useToast } from 'vue-toastification'
 
-let props = defineProps(['task'])
+let props = defineProps(['video'])
+let emit = defineEmits(['closeModal', 'refreshData'])
 
-let { data: categories } = await useAsyncData(() =>
-  $fetch('/api/category/getCategory')
-)
+let videoTaskTitle = ref(props.video?.title)
+let videoTaskDescription = ref(props.video?.description)
+let videoTaskPriority = ref(props.video?.priority)
 
-let taskTitle = ref(props.task.title)
-let taskDescription = ref(props.task.description)
-let taskPriority = ref(props.task.priority)
-let taskCategory = ref(props.task.category)
+let selectedFile = ref(null)
+let videoUrl = ref(null)
 
 let loading = ref(false)
 
 let toast = useToast()
 
-let emit = defineEmits(['closeModal', 'refreshData'])
+function handleFileUpload (event) {
+  const file = event.target.files[0]
+  if (file) {
+    selectedFile.value = file
+    videoUrl.value = URL.createObjectURL(file)
+  }
+}
 
 async function editTaskFunc () {
-  if (!props.task.title) {
-    toast.error('لطفا یک عنوان برای تسکتون انتخاب کنید')
+  if (!videoTaskTitle.value) {
+    toast.error('لطفا یک عنوان و ویدیو برای تسکتون انتخاب کنید')
     return
   }
 
+  const formData = new FormData()
+  formData.append('title', videoTaskTitle.value)
+  formData.append('description', videoTaskDescription.value)
+  formData.append('date', props.video.date)
+  formData.append('for', props.video.for)
+  formData.append('priority', videoTaskPriority.value)
+  formData.append('file', selectedFile.value)
+
   loading.value = true
 
-  let data = await $fetch('/api/editTask', {
+  let data = await $fetch('/api/video/editVideo', {
     method: 'PUT',
-    query: { id: props.task.id },
-    body: {
-      ...props.task,
-      title: taskTitle.value,
-      description: taskDescription.value,
-      priority: taskPriority.value,
-      category: taskCategory.value
-    }
+    query: { id: props.video.id },
+    body: formData
   })
   loading.value = false
-  toast.success('تسک شما با موفقیت ویرایش شد')
+  toast.success('تسک ویدیویی شما با موفقیت ویرایش شد')
   emit('closeModal')
   emit('refreshData')
 }

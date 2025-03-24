@@ -2,7 +2,8 @@
   <NuxtLayout>
     <NuxtPage></NuxtPage>
   </NuxtLayout>
-  <!-- <NotAllowed></NotAllowed> -->
+  <TheDrawer></TheDrawer>
+  <NotAllowed></NotAllowed>
 </template>
 
 <script setup>
@@ -12,6 +13,9 @@ useHead({
 
 let showAddTaskModal = ref(false)
 let showAddCommonTaskModal = ref(false)
+let showAddCategoryModal = ref(false)
+
+let showAddVideoModal = ref(false)
 
 function showModal () {
   showAddTaskModal.value = true
@@ -21,10 +25,22 @@ function showCommonModal () {
   showAddCommonTaskModal.value = true
 }
 
+function showCategoryModal () {
+  showAddCategoryModal.value = true
+}
+
+function showVideoModal () {
+  showAddVideoModal.value = true
+}
+
 provide('showAddTaskModal', showAddTaskModal)
 provide('showAddCommonTaskModal', showAddCommonTaskModal)
 provide('showModal', showModal)
 provide('showCommonModal', showCommonModal)
+provide('showAddVideoModal', showAddVideoModal)
+provide('showVideoModal', showVideoModal)
+provide('showAddCategoryModal', showAddCategoryModal)
+provide('showCategoryModal', showCategoryModal)
 </script>
 
 <style>
@@ -34,6 +50,16 @@ provide('showCommonModal', showCommonModal)
 }
 .page-enter-from,
 .page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+.layout-enter-from,
+.layout-leave-to {
   opacity: 0;
   filter: blur(1rem);
 }
@@ -52,7 +78,7 @@ provide('showCommonModal', showCommonModal)
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 0;
+  z-index: 15;
   background: rgba(0, 0, 0, 0.3);
   top: 0;
   left: 0;

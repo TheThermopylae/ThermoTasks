@@ -17,22 +17,22 @@
             clip-rule="evenodd"
           />
         </svg>
-        <h2>افزودن تسک مشترک</h2>
+        <h2>افزودن دسته بندی</h2>
       </div>
-      <form @submit.prevent="addTaskFunc">
+      <form @submit.prevent="addCateogryFunc">
         <div class="mt-2">
           <div>
-            <label for="task-id" class="req">آیدی تسک</label>
+            <label for="category-title">عنوان دسته</label>
             <input
               type="text"
-              id="task-id"
+              id="category-title"
               class="w-full set-ring mt-2"
-              v-model="taskId"
+              v-model="categoryTitle"
             />
           </div>
         </div>
         <button class="btn-c w-full mt-4 h-12" v-if="!loading">
-          افزودن تسک
+          افزودن دسته
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -52,23 +52,6 @@
           <LoadingSpinner></LoadingSpinner>
         </button>
       </form>
-      <div class="flex justify-center mt-3 gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-          />
-        </svg>
-        <p>برای دریافت آیدی، بر روی تسک مورد نظر کلیک راست کنید</p>
-      </div>
     </div>
     <div @click="$emit('closeModal')" id="blureffect"></div>
   </div>
@@ -78,7 +61,7 @@
 import { useToast } from 'vue-toastification'
 let { user } = userAuth()
 
-let taskId = ref('')
+let categoryTitle = ref('')
 
 let loading = ref(false)
 
@@ -86,34 +69,23 @@ let toast = useToast()
 
 let emit = defineEmits(['closeModal', 'refreshData'])
 
-async function addTaskFunc () {
-  if (!taskId.value) {
-    toast.error('لطفا آیدی تسکتون رو وارد کنید')
+async function addCateogryFunc () {
+  if (!categoryTitle.value) {
+    toast.error('لطفا عنوان دسته بندی رو وارد کنید')
     return
   }
   loading.value = true
 
   try {
-    let findTasks = await $fetch('/api/getCommonTask', {
-      query: { id: taskId.value }
+    let data = await $fetch('/api/category/addCategory', {
+      method: 'POST',
+      body: { title: categoryTitle.value }
     })
-    if (!findTasks) {
-      toast.error('تسکی با این آیدی وجود ندارد!')
-      return
-    } else if (findTasks && findTasks.for.includes(user.value)) {
-      toast.warning('شما این تسک را از قبل دارید!')
-      return
-    } else {
-      findTasks.for.push(user.value)
-
-      let data = await $fetch('/api/addCommonTask', {
-        method: 'POST',
-        body: findTasks
-      })
-    }
 
     emit('refreshData')
-    toast.success('تسک مشترک شما با موفقیت اضافه شد')
+    data.type == 'error'
+      ? toast.error(data.message)
+      : toast.success(data.message)
     emit('closeModal')
   } catch (err) {
     console.log(err)

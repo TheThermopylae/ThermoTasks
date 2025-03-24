@@ -17,9 +17,9 @@
             clip-rule="evenodd"
           />
         </svg>
-        <h2>ویرایش تسک</h2>
+        <h2>افزودن ویدیو</h2>
       </div>
-      <form @submit.prevent="editTaskFunc">
+      <form @submit.prevent="addVideoFunc">
         <div class="grid grid-cols-2 gap-3 mt-2">
           <div>
             <label for="title" class="req">عنوان</label>
@@ -27,7 +27,7 @@
               type="text"
               id="title"
               class="w-full set-ring mt-2"
-              v-model="taskTitle"
+              v-model="data.title"
             />
           </div>
           <div>
@@ -36,15 +36,15 @@
               type="text"
               id="description"
               class="w-full set-ring mt-2"
-              v-model="taskDescription"
+              v-model="data.description"
             />
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="mt-4">
+        <div class="grid grid-cols-2 gap-5 mt-2">
+          <div>
             <label for="priority">اولویت</label>
             <select
-              v-model="taskPriority"
+              v-model="data.priority"
               id="priority"
               class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
             >
@@ -53,25 +53,20 @@
               <option value="زیاد">زیاد</option>
             </select>
           </div>
-          <div class="mt-4">
-            <label for="category">دسته بندی</label>
-            <select
-              v-model="taskCategory"
-              id="category"
-              class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
-            >
-              <option
-                v-for="item in categories"
-                :value="item.title"
-                :key="item.id"
-              >
-                {{ item.title }}
-              </option>
-            </select>
+          <div>
+            <label for="video-edit-input">ویدیو</label>
+            <input
+              type="file"
+              class="file-input file-input-ghost w-full border border-yellow-500 outline-none mt-2 h-10 p-0"
+              @change="handleFileUpload"
+              accept="video/*"
+              id="video-edit-input"
+            />
           </div>
         </div>
+
         <button class="btn-c w-full mt-4 h-12" v-if="!loading">
-          ویرایش تسک
+          افزودن ویدیو
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -83,7 +78,7 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+              d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
         </button>
@@ -98,46 +93,78 @@
 
 <script setup>
 import { useToast } from 'vue-toastification'
+import axios from 'axios'
 
-let props = defineProps(['task'])
+let { user } = userAuth()
 
-let { data: categories } = await useAsyncData(() =>
-  $fetch('/api/category/getCategory')
-)
+let { today } = useDate()
 
-let taskTitle = ref(props.task.title)
-let taskDescription = ref(props.task.description)
-let taskPriority = ref(props.task.priority)
-let taskCategory = ref(props.task.category)
+const toast = useToast()
 
 let loading = ref(false)
 
-let toast = useToast()
+let data = reactive({
+  title: '',
+  description: '',
+  date: today,
+  for: user.value,
+  priority: ''
+})
 
-let emit = defineEmits(['closeModal', 'refreshData'])
+let selectedFile = ref(null)
+let videoUrl = ref(null)
 
-async function editTaskFunc () {
-  if (!props.task.title) {
-    toast.error('لطفا یک عنوان برای تسکتون انتخاب کنید')
+let emit = defineEmits(['uploadedVideo', 'closeModal'])
+
+function handleFileUpload (event) {
+  const file = event.target.files[0]
+  if (file) {
+    selectedFile.value = file
+    videoUrl.value = URL.createObjectURL(file)
+  }
+}
+
+async function addVideoFunc () {
+  if (!data.title) {
+    toast.warning('لطفا عنوان ویدیو را وارد کنید')
+    return
+  } else if (!selectedFile.value) {
+    toast.warning('یک ویدیو را باید انتخاب کنید')
     return
   }
 
   loading.value = true
 
-  let data = await $fetch('/api/editTask', {
-    method: 'PUT',
-    query: { id: props.task.id },
-    body: {
-      ...props.task,
-      title: taskTitle.value,
-      description: taskDescription.value,
-      priority: taskPriority.value,
-      category: taskCategory.value
+  const formData = new FormData()
+  formData.append('title', data.title)
+  formData.append('description', data.description)
+  formData.append('date', data.date)
+  formData.append('for', data.for)
+  formData.append('priority', data.priority)
+  formData.append('file', selectedFile.value)
+
+  try {
+    let data = await axios.post('/api/video/uploadVideo', formData, {
+      onUploadProgress: progressEvent => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        )
+        toast.info(`در حال آپلود: ${percentCompleted}%`)
+      }
+    })
+
+    if (data.type === 'error') {
+      toast.error(data.data.message)
+      return
     }
-  })
-  loading.value = false
-  toast.success('تسک شما با موفقیت ویرایش شد')
-  emit('closeModal')
-  emit('refreshData')
+
+    toast.success(data.data.message)
+    emit('uploadedVideo')
+    emit('closeModal')
+  } catch (error) {
+    toast.error('ویدیو به دلیل حجم زیاد ذخیره نشد')
+  } finally {
+    loading.value = false
+  }
 }
 </script>

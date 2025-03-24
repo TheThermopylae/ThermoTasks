@@ -17,12 +17,12 @@
             clip-rule="evenodd"
           />
         </svg>
-        <h2>حذف تسک</h2>
+        <h2>حذف ویدیو</h2>
       </div>
-      <p class="mt-2 mb-4">آیا میخواهید این تسک را حذف کنید؟</p>
+      <p class="mt-2 mb-4">آیا میخواهید این ویدیو را حذف کنید؟</p>
       <div class="grid grid-cols-2 gap-3">
         <button
-          @click="removeTask"
+          @click="removeVideo"
           v-if="!loading"
           class="w-full bg-green-500 rounded-lg text-white p-3 hover:opacity-90 transition h-12 flex items-center justify-center"
         >
@@ -49,23 +49,23 @@
 <script setup>
 import { useToast } from 'vue-toastification'
 
-let props = defineProps(['task'])
+let props = defineProps(['video'])
 let loading = ref(false)
 
 let toast = useToast()
 
 let emit = defineEmits(['closeModal', 'refreshData'])
 
-async function removeTask () {
+async function removeVideo () {
   loading.value = true
 
-  let data = await $fetch('/api/deleteTask', {
+  let data = await $fetch('/api/video/deleteVideo', {
     method: 'DELETE',
-    query: { id: props.task.id }
+    query: { id: props.video.id }
   })
 
   loading.value = false
-  toast.success('تسک شما با موفقیت حذف شد')
+  toast.success('ویدیو شما با موفقیت حذف شد')
   emit('closeModal')
   emit('refreshData')
 }

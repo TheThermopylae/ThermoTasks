@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 w-11/12 bg-white z-10 md:w-2/3 lg:w-2/5 p-3 rounded-lg"
+      class="fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 w-11/12 bg-white z-20 md:w-2/3 lg:w-2/5 p-3 rounded-lg"
     >
       <div class="flex justify-between items-center">
         <svg
@@ -40,17 +40,29 @@
             />
           </div>
         </div>
-        <div class="mt-4">
-          <label for="priority">اولویت</label>
-          <select
-            v-model="task.priority"
-            id="priority"
-            class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
-          >
-            <option value="کم">کم</option>
-            <option value="متوسط">متوسط</option>
-            <option value="زیاد">زیاد</option>
-          </select>
+        <div class="grid grid-cols-2 gap-5">
+          <div class="mt-4">
+            <label for="priority">اولویت</label>
+            <select
+              v-model="task.priority"
+              id="priority"
+              class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
+            >
+              <option value="کم">کم</option>
+              <option value="متوسط">متوسط</option>
+              <option value="زیاد">زیاد</option>
+            </select>
+          </div>
+          <div class="mt-4">
+            <label for="category">دسته بندی</label>
+            <select
+              v-model="task.category"
+              id="category"
+              class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
+            >
+              <option :value="item.title" v-for="item in category" :key="item.id">{{ item.title }}</option>
+            </select>
+          </div>
         </div>
         <button class="btn-c w-full mt-4 h-12" v-if="!loading">
           افزودن تسک
@@ -83,6 +95,10 @@ import { useToast } from 'vue-toastification'
 
 let { user } = userAuth()
 
+let { data: category } = await useAsyncData(() =>
+  $fetch('/api/category/getCategory')
+)
+
 let { today } = useDate()
 let task = reactive({
   title: '',
@@ -90,7 +106,8 @@ let task = reactive({
   priority: 'متوسط',
   date: today,
   for: [user.value],
-  done: []
+  done: [],
+  category: ''
 })
 
 let loading = ref(false)
