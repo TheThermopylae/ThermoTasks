@@ -88,7 +88,7 @@ let loading = ref(false)
 
 let toast = useToast()
 
-let emit = defineEmits(['closeModal', 'refreshData'])
+let emit = defineEmits(['closeModal', 'refreshData','refreshCategory'])
 
 async function addTaskFunc () {
   if (!taskId.value) {
@@ -117,6 +117,7 @@ async function addTaskFunc () {
     }
 
     emit('refreshData')
+    emit('refreshCategory')
     toast.success('تسک مشترک شما با موفقیت اضافه شد')
     emit('closeModal')
   } catch (err) {

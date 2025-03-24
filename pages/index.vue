@@ -44,6 +44,7 @@
         "
       >
         <TaskCard
+          @refreshCategory="refreshCateogry"
           @refreshData="refresh"
           @deleteTask="showDeleteModalFunc(item)"
           @editTask="showEditModalFunc(item)"
@@ -72,6 +73,7 @@
     </Transition>
     <Transition>
       <ModalsAddCommonTaskModal
+        @refreshCategory="refreshCateogry"
         @refreshData="refresh"
         v-if="showAddCommonTaskModal"
         @closeModal="showAddCommonTaskModal = false"

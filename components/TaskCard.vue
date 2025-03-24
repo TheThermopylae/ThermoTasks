@@ -131,6 +131,7 @@ let props = defineProps(['data', 'index'])
 
 let emit = defineEmits([
   'refreshData',
+  'refreshCategory',
   'editTask',
   'deleteTask',
   'showStatusToastEmit',
@@ -173,12 +174,16 @@ async function leaveTask () {
     userItem => userItem == user.value
   )
 
-  let findUserDoneIndex = props.data.done.findIndex(
-    userItem => userItem == user.value
-  )
-  props.data.for.splice(findUserForIndex, 1)
-  props.data.done.splice(findUserDoneIndex, 1)
-
-  sendData('شما از انجام این تسک مشترک منصرف شدید!')
+  let data = await $fetch('/api/deleteCommonTask', {
+    query: {
+      userIndex: findUserForIndex,
+      username: user.value,
+      taskId: props.data.id
+    },
+    method: 'DELETE'
+  })
+  emit('refreshData')
+  emit('refreshCategory')
+  toast.success('شما از انجام این تسک مشترک منصرف شدید')
 }
 </script>
