@@ -117,8 +117,11 @@ let toast = useToast()
 let emit = defineEmits(['closeModal', 'refreshData'])
 
 async function editTaskFunc () {
-  if (!props.task.title) {
+  if (!taskTitle.value) {
     toast.error('لطفا یک عنوان برای تسکتون انتخاب کنید')
+    return
+  } else if (!taskCategory.value) {
+    toast.error('لطفا یک دسته بندی برای تسکتون انتخاب کنید')
     return
   }
 

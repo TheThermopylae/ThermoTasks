@@ -60,7 +60,13 @@
               id="category"
               class="w-full set-ring p-2 mt-2 border rounded-lg cursor-pointer"
             >
-              <option :value="item.title" v-for="item in category" :key="item.id">{{ item.title }}</option>
+              <option
+                :value="item.title"
+                v-for="item in category"
+                :key="item.id"
+              >
+                {{ item.title }}
+              </option>
             </select>
           </div>
         </div>
@@ -119,6 +125,9 @@ let emit = defineEmits(['closeModal', 'refreshData'])
 async function addTaskFunc () {
   if (!task.title) {
     toast.error('لطفا یک عنوان برای تسکتون انتخاب کنید')
+    return
+  } else if (!task.category) {
+    toast.error('لطفا یک دسته بندی برای تسکتون انتخاب کنید')
     return
   }
 
