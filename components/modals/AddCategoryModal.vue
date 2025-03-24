@@ -79,7 +79,8 @@ async function addCateogryFunc () {
   try {
     let data = await $fetch('/api/category/addCategory', {
       method: 'POST',
-      body: { title: categoryTitle.value }
+      body: { title: categoryTitle.value },
+      query: { user: user.value }
     })
 
     emit('refreshData')

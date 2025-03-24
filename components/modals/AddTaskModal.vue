@@ -102,7 +102,9 @@ import { useToast } from 'vue-toastification'
 let { user } = userAuth()
 
 let { data: category } = await useAsyncData(() =>
-  $fetch('/api/category/getCategory')
+  $fetch('/api/category/getCategory', {
+    query: { user: user.value }
+  })
 )
 
 let { today } = useDate()

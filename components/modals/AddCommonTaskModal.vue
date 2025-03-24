@@ -78,6 +78,10 @@
 import { useToast } from 'vue-toastification'
 let { user } = userAuth()
 
+let { data: categories } = await useAsyncData(() =>
+  $fetch('/api/category/getCategory')
+)
+
 let taskId = ref('')
 
 let loading = ref(false)

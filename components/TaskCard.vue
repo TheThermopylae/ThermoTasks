@@ -111,7 +111,7 @@
       width="1.5em"
       height="1.5em"
       viewBox="0 0 256 256"
-      class="absolute left-2"
+      class="absolute left-2 top-2"
       :class="{ 'text-green-500': props.data.for[0] == user }"
     >
       <path

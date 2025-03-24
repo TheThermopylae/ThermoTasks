@@ -1,5 +1,10 @@
 <template>
   <div>
+    <SortSection
+      @changeSort="setSort"
+      v-if="!route.query.title"
+      :sort="sortType"
+    ></SortSection>
     <StatusToast
       :class="{ 'right-5': showStatusToast, '-right-64': !showStatusToast }"
       :data="targetTask"
@@ -7,7 +12,7 @@
     <Motion
       as="div"
       v-for="(categoryItem, index) in categories"
-      class="mb-2 border-b pb-3 last:border-red-500"
+      class="mb-2 border-b pb-3"
       :initial="{ y: 10, opacity: 0 }"
       :animate="{ y: 0, opacity: 1 }"
       :transition="{
@@ -119,16 +124,20 @@ let showAddTaskModal = inject('showAddTaskModal')
 let showAddCommonTaskModal = inject('showAddCommonTaskModal')
 let showAddCategoryModal = inject('showAddCategoryModal')
 
+let sortType = ref('new')
+
+const setSort = type => (sortType.value = type)
+
 let { data: tasks, refresh } = await useAsyncData(() =>
   $fetch('/api/getTasks', {
-    query: { title: route.query.title, user: user.value },
+    query: { title: route.query.title, user: user.value, sort: sortType.value },
     method: 'POST'
   })
 )
 
 let { data: categories, refresh: refreshCateogry } = await useAsyncData(() =>
   $fetch('/api/category/getCategory', {
-    query: { title: route.query.title, user: user.value },
+    query: { user: user.value },
     method: 'POST'
   })
 )
@@ -188,4 +197,8 @@ function showIdToastFunc (item) {
     targetTask.value = item
   }
 }
+
+watch(sortType, () => {
+  refresh()
+})
 </script>
