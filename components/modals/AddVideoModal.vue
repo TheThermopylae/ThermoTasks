@@ -108,7 +108,7 @@ let data = reactive({
   description: '',
   date: today,
   for: user.value,
-  priority: ''
+  priority: 'متوسط'
 })
 
 let selectedFile = ref(null)

@@ -16,7 +16,7 @@
       :initial="{ y: 10, opacity: 0 }"
       :animate="{ y: 0, opacity: 1 }"
       :transition="{
-        delay: 0.2 * index
+        delay: 0.3 * (index + 0.1)
       }"
     >
       <div class="flex justify-between items-center">
@@ -126,7 +126,7 @@ let showAddTaskModal = inject('showAddTaskModal')
 let showAddCommonTaskModal = inject('showAddCommonTaskModal')
 let showAddCategoryModal = inject('showAddCategoryModal')
 
-let sortType = ref('new')
+let sortType = ref('old')
 
 const setSort = type => (sortType.value = type)
 

@@ -11,7 +11,7 @@
     :initial="{ y: 10, opacity: 0 }"
     :animate="{ y: 0, opacity: 1 }"
     :transition="{
-      delay: 0.3 * props.index
+      delay: 0.2 * (props.index + 0.1)
     }"
   >
     <div class="flex flex-col justify-between">

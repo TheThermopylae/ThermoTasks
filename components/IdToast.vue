@@ -20,6 +20,6 @@ let toast = useToast()
 function copyFunc () {
   navigator.clipboard.writeText(props.data.id)
 
-  toast.info('آیدی در کلیپ بورد شما کپی شد!')
+  toast.info('آیدی در کلیپ بورد شما کپی شد')
 }
 </script>
