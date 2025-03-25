@@ -1,5 +1,11 @@
 <template>
   <li class="flex gap-3">
+    <button
+      class="border border-yellow-500 px-4 rounded-lg hover:bg-yellow-500 hover:text-white transition-all w-20"
+      @click="removeBgFromBody"
+    >
+      حذف
+    </button>
     <input
       type="file"
       class="file-input file-input-ghost w-full max-w-xs border border-yellow-500 outline-none"
@@ -71,5 +77,10 @@ async function uploadFile () {
   } finally {
     loading.value = false
   }
+}
+
+function removeBgFromBody () {
+  localStorage.removeItem('bg')
+  document.body.removeAttribute('style')
 }
 </script>

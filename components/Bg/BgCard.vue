@@ -4,7 +4,7 @@
       @click="setBg"
       :src="props.image?.path"
       :alt="props.image.id"
-      class="w-full rounded-xl h-40 cursor-pointer"
+      class="w-full rounded-xl h-40 cursor-pointer border border-gray-300"
     />
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -32,6 +32,7 @@ let emit = defineEmits(['refreshData'])
 
 function setBg () {
   document.body.style.background = `url(${props.image.path}) no-repeat center/cover`
+  localStorage.setItem('bg', props.image.path)
 }
 
 let toast = useToast()
@@ -39,8 +40,11 @@ let toast = useToast()
 async function deleteBg () {
   let data = await $fetch('/api/image/deleteImage', {
     method: 'DELETE',
-    query: { id: props.image.id ,path : props.image.path}
+    query: { id: props.image.id, path: props.image.path }
   })
+
+  if (props.image.path == localStorage.getItem('bg'))
+    document.body.removeAttribute('style')
 
   toast.success('بکگراند شما با موفقیت حذف شد')
   emit('refreshData')

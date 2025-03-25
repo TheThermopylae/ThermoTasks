@@ -4,7 +4,7 @@
   </NuxtLayout>
   <div>
     <TheDrawer></TheDrawer>
-    <SelectBgDrawer></SelectBgDrawer>
+    <BgSelectBgDrawer></BgSelectBgDrawer>
   </div>
   <NotAllowed></NotAllowed>
 </template>
@@ -12,6 +12,14 @@
 <script setup>
 useHead({
   title: 'ThermoTasks'
+})
+
+let bgPath = ref(null)
+
+onMounted(() => {
+  bgPath.value = localStorage.getItem('bg')
+  if (bgPath.value)
+    document.body.style.background = `url(${bgPath.value}) no-repeat center/cover`
 })
 
 let showAddTaskModal = ref(false)
