@@ -2,7 +2,10 @@
   <NuxtLayout>
     <NuxtPage></NuxtPage>
   </NuxtLayout>
-  <TheDrawer></TheDrawer>
+  <div>
+    <TheDrawer></TheDrawer>
+    <SelectBgDrawer></SelectBgDrawer>
+  </div>
   <NotAllowed></NotAllowed>
 </template>
 

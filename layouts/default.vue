@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-white-c py-4 px-6">
+  <div class="flex flex-col min-h-screen py-4 px-6">
     <HeaderTheHeaderTask />
     <div class="flex-grow container mx-auto">
       <slot />

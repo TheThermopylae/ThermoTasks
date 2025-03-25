@@ -5,7 +5,7 @@ import musics from '../../../db/musics.json'
 export default defineEventHandler(async event => {
   const formData = await readMultipartFormData(event)
   const file = formData.find(item => item.name == 'file')
-  const path = './public/uploads/' + file.filename
+  const path = './public/uploads/music/' + file.filename
 
   if (musics.data.some(music => music.name === file.filename))
     return {
@@ -16,7 +16,7 @@ export default defineEventHandler(async event => {
 
   musics.data.push({
     name: file.filename,
-    path: '/uploads/' + file.filename,
+    path: '/uploads/music/' + file.filename,
     id: crypto.randomUUID()
   })
 
