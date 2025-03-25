@@ -79,7 +79,7 @@ let videoTask = ref(props.data.status)
 let toast = useToast()
 
 async function changeStatus () {
-  let data = await $fetch('/api/video/editVideo', {
+  let data = await $fetch('/api/video/changeVideoTaskStatus', {
     method: 'PUT',
     body: { ...props.data, status: videoTask.value },
     query: { id: props.data.id }
