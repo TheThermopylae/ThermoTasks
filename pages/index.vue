@@ -2,7 +2,7 @@
   <div>
     <SortSection
       @changeSort="setSort"
-      v-if="!route.query.title"
+      v-if="!route.query.title && categories.length > 0"
       :sort="sortType"
     ></SortSection>
     <StatusToast
@@ -12,6 +12,7 @@
     <Motion
       as="div"
       v-for="(categoryItem, index) in categories"
+      v-if="categories.length > 0"
       class="mb-2 border-b pb-3"
       :initial="{ y: 10, opacity: 0 }"
       :animate="{ y: 0, opacity: 1 }"
@@ -60,6 +61,7 @@
       </div>
       <p v-else class="text-center text-2xl text-gray-600">تسکی پیدا نشد</p>
     </Motion>
+    <p v-else class="text-center text-2xl text-gray-600">دسته بندی وجود ندارد</p>
     <IdToast
       :class="{ 'right-5': showIdToast, '-right-96': !showIdToast }"
       :data="targetTask"

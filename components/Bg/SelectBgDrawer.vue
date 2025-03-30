@@ -1,5 +1,13 @@
 <template>
-  <div class="drawer">
+  <Motion
+    as="div"
+    class="drawer"
+    :initial="{ opacity: 0 }"
+    :animate="{ opacity: 1 }"
+    :transition="{
+      delay: .8
+    }"
+  >
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
       <!-- Page content here -->
@@ -28,15 +36,18 @@
       ></label>
       <ul class="bg-base-200 text-base-content min-h-full w-96 p-4">
         <BgUploadBg @uploadedImage="refresh" class="mb-5"></BgUploadBg>
-        <li v-if="images.length > 0" v-for="item in images" :key="item.id" class="mb-3 last:m-0">
+        <li
+          v-if="images.length > 0"
+          v-for="item in images"
+          :key="item.id"
+          class="mb-3 last:m-0"
+        >
           <BgCard @refreshData="refresh" :image="item"></BgCard>
         </li>
-        <li v-else class="text-center text-lg">
-          شما بک گراندی اضافه نکردید!
-        </li>
+        <li v-else class="text-center text-lg">شما بک گراندی اضافه نکردید!</li>
       </ul>
     </div>
-  </div>
+  </Motion>
 </template>
 
 <script setup>
